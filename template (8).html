@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Number Generator</title>
+    <style>
+        @keyframes shine {
+            0% {
+                background-position: -500%;
+            }
+            100% {
+                background-position: 500%;
+            }
+        }
+        @keyframes slot {
+            0% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-150%);
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+        @keyframes roll {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #000;
+            color: #00f;
+            overflow: hidden;
+        }
+        .title {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 24px;
+            background: linear-gradient(90deg, rgba(255,255,255,0.3), rgba(255,255,255,1), rgba(255,255,255,0.3));
+            -webkit-background-clip: text;
+            color: transparent;
+            animation: shine 3s infinite linear;
+        }
+        .container {
+            text-align: center;
+            padding: 20px 40px;
+            background-color: #000; /* Set to black */
+            border-radius: 8px;
+            position: relative;
+            max-width: 400px;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 100px; /* Increased size */
+            font-weight: bold;
+            color: #00f;
+            display: inline-block;
+            overflow: hidden;
+            height: 120px; /* Adjusted height */
+            line-height: 120px;
+            background-color: #000; /* Set to black */
+            padding: 10px 20px;
+            border-radius: 8px;
+            animation: shine 3s infinite linear;
+            cursor: pointer;
+        }
+        .result-inner {
+            display: inline-block;
+            animation: slot 0.5s;
+        }
+    </style>
+</head>
+<body>
+
+<div class="title">RNGBYAI🎲</div>
+
+<div class="container">
+    <div id="result" onclick="generateRandomNumber()"><div class="result-inner">0</div></div>
+</div>
+
+<script>
+    function generateRandomNumber() {
+        var min = 1;
+        var max = 100;
+        var resultInner = document.querySelector('.result-inner');
+        
+        // Shuffle animation
+        resultInner.style.animation = 'none';
+        let shuffling = setInterval(() => {
+            resultInner.innerText = Math.floor(Math.random() * (max - min + 1)) + min;
+        }, 50);
+
+        setTimeout(() => {
+            clearInterval(shuffling);
+            var randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+            resultInner.innerText = randomNumber;
+            resultInner.style.animation = '';
+        }, 2000);
+    }
+</script>
+
+</body>
+</html>
