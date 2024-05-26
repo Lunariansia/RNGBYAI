@@ -24,14 +24,6 @@
                 transform: translateY(0);
             }
         }
-        @keyframes roll {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
-        }
         body {
             font-family: Arial, sans-serif;
             display: flex;
@@ -61,7 +53,7 @@
             position: relative;
             max-width: 400px;
         }
-        #result {
+        .result {
             margin-top: 20px;
             font-size: 100px; /* Increased size */
             font-weight: bold;
@@ -79,6 +71,7 @@
         .result-inner {
             display: inline-block;
             animation: slot 0.5s;
+            text-shadow: 0px 0px 20px rgba(0, 0, 255, 0.8); /* Adding a text shadow */
         }
     </style>
 </head>
@@ -87,28 +80,38 @@
 <div class="title">RNGBYAI🎲</div>
 
 <div class="container">
-    <div id="result" onclick="generateRandomNumber()"><div class="result-inner">0</div></div>
+    <div id="result" class="result"><div class="result-inner">0</div></div>
 </div>
 
 <script>
-    function generateRandomNumber() {
-        var min = 1;
-        var max = 100;
-        var resultInner = document.querySelector('.result-inner');
-        
-        // Shuffle animation
-        resultInner.style.animation = 'none';
-        let shuffling = setInterval(() => {
-            resultInner.innerText = Math.floor(Math.random() * (max - min + 1)) + min;
-        }, 50);
+    document.addEventListener("DOMContentLoaded", function() {
+        const resultInner = document.querySelector('.result-inner');
+        const min = 1;
+        const max = 100;
 
-        setTimeout(() => {
-            clearInterval(shuffling);
-            var randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
-            resultInner.innerText = randomNumber;
-            resultInner.style.animation = '';
-        }, 2000);
-    }
+        function generateRandomNumber() {
+            // Shuffle animation
+            resultInner.style.animation = 'none';
+            let start = null;
+            function shuffle(timestamp) {
+                if (!start) start = timestamp;
+                const progress = timestamp - start;
+                if (progress < 2000) {
+                    resultInner.innerText = Math.floor(Math.random() * (max - min + 1)) + min;
+                    requestAnimationFrame(shuffle);
+                } else {
+                    clearInterval(shuffling);
+                    const randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+                    resultInner.innerText = randomNumber;
+                    resultInner.style.animation = '';
+                }
+            }
+            requestAnimationFrame(shuffle);
+        }
+
+        const result = document.getElementById('result');
+        result.addEventListener('click', generateRandomNumber);
+    });
 </script>
 
 </body>
